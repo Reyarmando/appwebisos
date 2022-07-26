@@ -1,5 +1,14 @@
-import { Accordion, Row, Col, Button } from 'react-bootstrap';
+import { Accordion, Row, Col, Button, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+import Product from './Products/Product';
+import AddProduct from './Products/AddProduct';
 export function Home() {
+
+    const [show, steShow] = useState(false)
+
+    const handleShow = () => steShow(true)
+    const handleClose = () => steShow(false)
+
     return (
         <div>
             <h1>Home</h1>
@@ -9,19 +18,13 @@ export function Home() {
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Productos y Servicios</Accordion.Header>
                             <Accordion.Body>
-                                <Button>Agregar Producto/Servicio</Button>
+                                <Button onClick={handleShow}>Agregar Producto/Servicio</Button>
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Clientes y Proveedores</Accordion.Header>
                             <Accordion.Body>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                culpa qui officia deserunt mollit anim id est laborum.
+                                Lorem
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="2">
@@ -102,9 +105,28 @@ export function Home() {
                     </Accordion>
                 </Col>
                 <Col sm={9}>
-                    <div>content</div>
+                    <div>
+                        <Product />
+                    </div>
                 </Col>
             </Row>
+
+            <Modal show={show} size="lg">
+                <Modal.Header >
+                    <Modal.Title>
+                        Producto / Servicio
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <AddProduct/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose} >
+                        close
+                    </Button>
+                </Modal.Footer>
+
+            </Modal>
         </div>
     )
 }

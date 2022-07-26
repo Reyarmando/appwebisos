@@ -1,13 +1,12 @@
+
+
 import { useState, useEffect } from "react"
 import { db } from "../../firebase"
 import { Modal, Button, Table, Row, Col, Container } from 'react-bootstrap'
 import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, orderBy, query } from "firebase/firestore"
 import { TrashIcon, PencilIcon } from '@heroicons/react/outline'
 
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import ProviderAdd from "./EppsAdd"
-import EditProvider from "./EditEpp"
+
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Epps = () => {
@@ -25,12 +24,13 @@ const Epps = () => {
         })
     }
 
-    const MySwal = withReactContent(Swal)
+
 
     const [epps, setEpps] = useState([])
+    const [tools, setTools] = useState([])
     const [currentId, setCurrentId] = useState("");
 
-    const eppsCollection = collection(db, "epps")
+    const toolsCollection = collection(db, "epps")
 
     const [show, steShow] = useState(false)
 
@@ -42,61 +42,25 @@ const Epps = () => {
     const handleShow2 = () => steShow2(true)
     const handleClose2 = () => steShow2(false)
 
-    const addEpps = async (objetProvider) => {
-        await addDoc(eppsCollection, (objetProvider))
 
-    }
 
-    const updateEpp = async (objetProvider) => {
-        const doct = doc(db, "epps", currentId)
-        await updateDoc(doct, objetProvider)
-        Swal.fire(
-            'Updated!',
-            'Your file has been updated.',
-            'success'
-        )
-    }
-
-    const getEpp = async () => {
-        const q = query(eppsCollection, orderBy("timestamp", "desc"))
-        onSnapshot(q, (querySnapshot) => {
+    const getTools = async () => {
+        onSnapshot(toolsCollection, (querySnapshot) => {
             const docs = [];
             querySnapshot.forEach(doc => {
                 docs.push({ ...doc.data(), id: doc.id })
             });
-            setEpps(docs)
+            setTools(docs)
         })
     }
 
-    const onDelete = async (id) => {
-        const eppDoc = doc(db, "epps", id)
-        deleteDoc(eppDoc)
-    }
 
-    const confirmDelete = (id) => {
-        MySwal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                onDelete(id)
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            }
-        })
-    }
+    
 
     useEffect(() => {
-        getEpp()
+        getTools()
         handleClose2()
+        console.log(epps)
     }, [])
 
     return (
@@ -111,7 +75,6 @@ const Epps = () => {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <ProviderAdd {...{ addEpps, handleClose, currentId }}></ProviderAdd>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose} >
@@ -152,7 +115,7 @@ const Epps = () => {
                                     exit='hidden'
                                     variants={variants}>
                                     <AnimatePresence>
-                                        {epps.map((epp, index) => (
+                                        {tools.map((epp, index) => (
                                             <motion.tr
                                                 custom={ (index) * 0.3 }
                                                 initial='hidden'
@@ -163,14 +126,14 @@ const Epps = () => {
                                                 layoutId={epp.id}
                                                 key={epp.id}>
                                                 <td>-</td>
-                                                <td>{epp.name}</td>
-                                                <td>{epp.codeinv}</td>
                                                 <td>{epp.brand}</td>
+                                                <td>{epp.name}</td>
+                                                <td>{}</td>
                                                 <td>{epp.model}</td>
-                                                <td>{epp.stock}</td>
+                                                <td>{}</td>
                                                 <td>
                                                     <button onClick={handleShow2}><p onClick={() => setCurrentId(epp.id)}><PencilIcon className="h-4 w-4 text-yellow-500" aria-hidden="true" /></p></button>
-                                                    <button onClick={() => confirmDelete(epp.id)} className=""><TrashIcon className="h-4 w-4 text-red-700" aria-hidden="true" /></button>
+                                                    
                                                 </td>
                                             </motion.tr>
                                         ))}
@@ -187,7 +150,7 @@ const Epps = () => {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <EditProvider {...{ currentId, updateEpp, handleClose2 }}></EditProvider>
+                       
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose2} >
