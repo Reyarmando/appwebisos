@@ -14,12 +14,10 @@ export function Home() {
             <h1>Home</h1>
             <Row>
                 <Col sm={3}>
-                    <Accordion defaultActiveKey={['0']} alwaysOpen>
+                    <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Productos y Servicios</Accordion.Header>
-                            <Accordion.Body>
-                                <Button onClick={handleShow}>Agregar Producto/Servicio</Button>
-                            </Accordion.Body>
+                            
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Clientes y Proveedores</Accordion.Header>

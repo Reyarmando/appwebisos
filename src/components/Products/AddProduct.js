@@ -8,11 +8,13 @@ const AddProduct = (props) => {
 
 
     const initialStateValues = {
-        Codigo: '',
+        codigo: '',
+        codebar: '',
         categoria: '',
         unidad: '',
         nombre: '',
         precio: '',
+        moneda: '',
         img: '',
         timestamp: serverTimestamp()
     }
@@ -27,7 +29,7 @@ const AddProduct = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.addEpps(values);
+        props.addProduct(values);
         props.handleClose()
         setValues({ ...initialStateValues })
     }
@@ -141,7 +143,11 @@ const AddProduct = (props) => {
                 <Col sm={4}>
                     <Form.Group>
                         <FloatingLabel controlId="floatingInputGrid" label="Moneda">
-                            <Form.Select>
+                            <Form.Select
+                                name="moneda"
+                                type="text"
+                                onChange={handleInputChange}
+                                required>
                                 <option>Soles</option>
                                 <option>Dolares</option>
                                 <option>Euros</option>
