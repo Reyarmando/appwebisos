@@ -3,6 +3,7 @@ import { Form, Button, FloatingLabel, Row, Col, Figure } from 'react-bootstrap'
 
 import { useState } from 'react'
 import { serverTimestamp } from 'firebase/firestore'
+import { uploadFile } from '../../firebase';
 
 const AddProduct = (props) => {
 
@@ -34,6 +35,18 @@ const AddProduct = (props) => {
         setValues({ ...initialStateValues })
     }
 
+    const [imageUpload, setImageUpload] = useState(null)
+
+
+    const handleSubirIMG = async (e) => {
+        e.preventDefault()
+        try {
+            const result = await uploadFile(imageUpload);
+            console.log(result)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     return (
@@ -102,9 +115,8 @@ const AddProduct = (props) => {
                             Nulla vitae elit libero, a pharetra augue mollis interdum.
                         </Figure.Caption>
                     </Figure>
-                    <Button>
-                        subir foto
-                    </Button>
+                    <input type='file' name='' id='' onChange={(event) => { setImageUpload(event.target.files[0]) }} />
+                    <button onClick={handleSubirIMG}>subir imagen</button>
                 </Col>
 
             </Row>

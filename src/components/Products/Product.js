@@ -5,7 +5,10 @@ import { db } from "../../firebase"
 import { Modal, Button, Table, Row, Col, Container } from 'react-bootstrap'
 import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, orderBy, query } from "firebase/firestore"
 
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import { motion, AnimatePresence } from 'framer-motion'
 import AddProduct from "./AddProduct"
@@ -26,6 +29,7 @@ const Epps = () => {
         })
     }
 
+    const MySwal = withReactContent(Swal)
 
     const [products, setProducts] = useState([])
     const [currentId, setCurrentId] = useState("");
@@ -61,6 +65,31 @@ const Epps = () => {
         await updateDoc(docm, objetProvider)
     }
 
+    const onDelete = async (id) => {
+        const proDoc = doc(db, "productos", id)
+        deleteDoc(proDoc)
+    }
+
+    const confirmDelete = (id) => {
+        MySwal.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                onDelete(id)
+                Swal.fire(
+                    'Eliminado!',
+                    'Tu producto fue eliminado.',
+                    'success'
+                )
+            }
+        })
+    }
 
     useEffect(() => {
         getTools()
@@ -102,7 +131,7 @@ const Epps = () => {
                     </Row>
                     <Row>
                         <Col>
-                            <Table striped bordered hover variant="dark">
+                            <Table striped bordered hover size="sm">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -136,8 +165,8 @@ const Epps = () => {
                                                 <td>{product.categoria}</td>
                                                 <td>{product.precio}</td>
                                                 <td>
-                                                    <button onClick={handleShow2}><p onClick={() => setCurrentId(product.id)}>administrar</p></button>
-
+                                                    <button className="btn btn-xs" onClick={handleShow2}><PencilAltIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>
+                                                    <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><TrashIcon className="h-4 w-4 text-red-700" aria-hidden="true" /></button>
                                                 </td>
                                             </motion.tr>
                                         ))}

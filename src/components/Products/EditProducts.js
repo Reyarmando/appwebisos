@@ -31,7 +31,7 @@ const EditProduct = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.updateEpp(values);
+        props.updateProduct(values);
         props.handleClose2()
         setValues({ ...initialStateValues })
     }
@@ -183,7 +183,7 @@ const EditProduct = (props) => {
 
                         <Button type='submit' className="block
                     text-md font-bold my-4">
-                            Agregar Producto
+                            Editar Producto
                         </Button>
                     </Form>
                 </Tab>
