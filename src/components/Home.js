@@ -1,30 +1,51 @@
-import { Accordion, Row, Col, Button, Modal } from 'react-bootstrap';
+import { Accordion, Row, Col, Button, Modal, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 import Product from './Products/Product';
 import AddProduct from './Products/AddProduct';
+import { useAuth } from './Contexts/authContext';
+import { Outlet, Link } from "react-router-dom"
 export function Home() {
+
+    const { user, logout, loading } = useAuth()
 
     const [show, steShow] = useState(false)
 
     const handleShow = () => steShow(true)
     const handleClose = () => steShow(false)
 
+    const handleLogout = async () => {
+        try {
+            await logout()
+        } catch (error) {
+            console.erorr(error)
+        }
+    }
+
+    if (loading) return <h1><Spinner animation="border" variant="info" /></h1>
+
     return (
         <div>
-            <h1>Home</h1>
+            <Row>
+                <Col sm={10}>
+                    <h3>Bienvenido:</h3>
+                </Col>
+                <Col>
+                    <Button onClick={handleLogout} className="btn btn-xs" variant="light">Salir</Button>
+                </Col>
+            </Row>
+
             <Row>
                 <Col sm={3}>
                     <Accordion defaultActiveKey="0">
-                        <Accordion.Item eventKey="0">
+                        <Accordion.Item eventKey="0" as={Link} to="/productoServicios">
                             <Accordion.Header>Productos y Servicios</Accordion.Header>
-                            
+
                         </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Clientes y Proveedores</Accordion.Header>
-                            <Accordion.Body>
-                                Lorem
-                            </Accordion.Body>
+
+                        <Accordion.Item eventKey="1" as={Link} to="/clientesProveedores">
+                            <Accordion.Header >Clientes y Proveedores</Accordion.Header>
                         </Accordion.Item>
+
                         <Accordion.Item eventKey="2">
                             <Accordion.Header>Realizar Ventas</Accordion.Header>
                             <Accordion.Body>
@@ -103,9 +124,9 @@ export function Home() {
                     </Accordion>
                 </Col>
                 <Col sm={9}>
-                    <div>
-                        <Product />
-                    </div>
+                    <section>
+                        <Outlet></Outlet>
+                    </section>
                 </Col>
             </Row>
 
@@ -116,7 +137,7 @@ export function Home() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <AddProduct/>
+                    <AddProduct />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose} >

@@ -5,7 +5,7 @@ import { db } from "../../firebase"
 import { Modal, Button, Table, Row, Col, Container } from 'react-bootstrap'
 import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, orderBy, query } from "firebase/firestore"
 
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { PencilAltIcon, TrashIcon, SortAscendingIcon, SortDescendingIcon, SwitchVerticalIcon } from '@heroicons/react/solid'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -14,7 +14,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import AddProduct from "./AddProduct"
 import EditProduct from "./EditProducts"
 
-const Epps = () => {
+import * as XLSX from 'xlsx'
+
+const Products = () => {
+
+
 
     const variants = {
         hidden: {
@@ -45,6 +49,16 @@ const Epps = () => {
 
     const handleShow2 = () => steShow2(true)
     const handleClose2 = () => steShow2(false)
+
+    const [show3, steShow3] = useState(false)
+
+    const handleShow3 = () => steShow(true)
+    const handleClose3 = () => steShow(false)
+
+    const [show4, steShow4] = useState(false)
+
+    const handleShow4 = () => steShow2(true)
+    const handleClose4 = () => steShow2(false)
 
     const addProduct = async (objetProvider) => {
         await addDoc(productsCollection, (objetProvider))
@@ -91,6 +105,15 @@ const Epps = () => {
         })
     }
 
+    const handleExport = () => {
+        var wb = XLSX.utils.book_new(),
+            ws = XLSX.utils.json_to_sheet(products);
+
+        XLSX.utils.book_append_sheet(wb, ws, "Productos");
+
+        XLSX.writeFile(wb, "Productos-prueba.xlsx")
+    }
+
     useEffect(() => {
         getTools()
         handleClose2()
@@ -116,6 +139,39 @@ const Epps = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+
+                <Modal show={show3} size="lg">
+                    <Modal.Header >
+                        <Modal.Title>
+                            Producto / Servicio
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <AddProduct {...{ addProduct, handleClose, currentId }} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose} >
+                            close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={show4} size="lg">
+                    <Modal.Header >
+                        <Modal.Title>
+                            Producto / Servicio
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <AddProduct {...{ addProduct, handleClose, currentId }} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose} >
+                            close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Container>
                     <Row>
                         <Col><motion.h1 initial={{ scale: 0 }}
@@ -127,11 +183,14 @@ const Epps = () => {
                                 type: 'spring'
                             }}
                         >Productos / Servicios</motion.h1></Col>
-                        <Col><Button onClick={handleShow} className="btn btn-succsess">Agregar producto</Button></Col>
+                        <Col><Button onClick={handleShow} className="btn btn-sm" variant="success">Agregar producto/Servicio</Button></Col>
+                        <Col>
+                            <Button onClick={handleExport} className="btn btn-sm" variant="success">export excels</Button>
+                        </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Table striped bordered hover size="sm">
+                            <Table striped bordered hover size="sm" id="tablaProductos">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -140,6 +199,7 @@ const Epps = () => {
                                         <th>Codigo de barras</th>
                                         <th>Categoia</th>
                                         <th>Precio</th>
+                                        <th>informes</th>
                                         <th>actions</th>
                                     </tr>
                                 </thead>
@@ -158,12 +218,17 @@ const Epps = () => {
                                                 variants={variants}
                                                 layoutId={product.id}
                                                 key={product.id}>
-                                                <td>-</td>
+                                                <td><img className='center' width="50" height="50" src={product.img} alt='' /></td>
                                                 <td>{product.nombre}</td>
                                                 <td>{product.codigo}</td>
                                                 <td>{product.codebar}</td>
                                                 <td>{product.categoria}</td>
                                                 <td>{product.precio}</td>
+                                                <td>
+                                                    <button className="btn btn-xs" onClick={handleShow2}><SortAscendingIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>
+                                                    <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><SortDescendingIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
+                                                    <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><SwitchVerticalIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
+                                                </td>
                                                 <td>
                                                     <button className="btn btn-xs" onClick={handleShow2}><PencilAltIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>
                                                     <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><TrashIcon className="h-4 w-4 text-red-700" aria-hidden="true" /></button>
@@ -180,7 +245,7 @@ const Epps = () => {
                 <Modal show={show2} size="lg">
                     <Modal.Header >
                         <Modal.Title>
-                            Administrar Producto
+                            Administrar Producto / Servicio
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -197,4 +262,4 @@ const Epps = () => {
     )
 }
 
-export default Epps
+export default Products

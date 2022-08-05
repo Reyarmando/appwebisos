@@ -7,17 +7,17 @@ import { uploadFile } from '../../firebase';
 
 import { ArrowCircleUpIcon } from '@heroicons/react/solid'
 
-const AddProduct = (props) => {
+const AddClient = (props) => {
 
 
     const initialStateValues = {
-        codigo: '',
-        codebar: '',
-        categoria: '',
-        unidad: '',
+        direccion: '',
+        email: '',
+        ndoc: '',
         nombre: '',
-        precio: '',
-        moneda: '',
+        numcel: '',
+        obs: '',
+        tdoc: '',
         img: '',
         timestamp: serverTimestamp()
     }
@@ -49,7 +49,7 @@ const AddProduct = (props) => {
         try {
             const result = await uploadFile(imageUpload);
             console.log(result)
-            setValues({ ...values, img: result})
+            setValues({ ...values, img: result })
             setArchivo(100)
             setPicture(result)
         } catch (error) {
@@ -64,11 +64,26 @@ const AddProduct = (props) => {
             <Row>
                 <Col sm={4}>
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Codigo">
-                            <Form.Control
-                                name="codigo"
+                        <FloatingLabel controlId="floatingInputGrid" label="Tipo de Documento">
+                            <Form.Select
+                                name="tdoc"
                                 type="text"
-                                placeholder='codigo'
+                                onChange={handleInputChange}
+                                required>
+                                <option>Selecione Doc.</option>
+                                <option>DNI</option>
+                                <option>RUC</option>
+                                <option>Pasaporte</option>
+                            </Form.Select>
+                        </FloatingLabel>
+                    </Form.Group>
+                    <br />
+                    <Form.Group>
+                        <FloatingLabel controlId="floatingInputGrid" label="Nombre/Razón social">
+                            <Form.Control
+                                name="Nombre"
+                                type="text"
+                                placeholder='nombre'
                                 onChange={handleInputChange}
                                 value={values.name}
                                 required />
@@ -76,83 +91,68 @@ const AddProduct = (props) => {
                     </Form.Group>
                     <br />
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Categoria">
+                        <FloatingLabel controlId="floatingInputGrid" label="E-mail">
                             <Form.Control
-                                name="categoria"
+                                name="email"
                                 type="text"
-                                placeholder='categoria'
+                                placeholder='email'
                                 onChange={handleInputChange}
-                                value={values.name}
+                                value={values.email}
                                 required />
                         </FloatingLabel>
                     </Form.Group>
-                    <br/>
+                    <br />
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Nombre del producto">
+                        <FloatingLabel controlId="floatingInputGrid" label="Observaciones">
                             <Form.Control
-                                name="nombre"
+                                name="obs"
                                 type="text"
-                                placeholder='nombre del producto'
+                                placeholder='observaciones'
                                 onChange={handleInputChange}
-                                value={values.name}
+                                value={values.obs}
                                 required />
-                        </FloatingLabel>
-                    </Form.Group>
-                    <br/>
-                    <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Moneda">
-                            <Form.Select
-                                name="moneda"
-                                type="text"
-                                onChange={handleInputChange}
-                                required>
-                                <option>Selecione moneda</option>
-                                <option>Soles</option>
-                                <option>Dolares</option>
-                                <option>Euros</option>
-                            </Form.Select>
                         </FloatingLabel>
                     </Form.Group>
                 </Col>
                 <Col sm={4}>
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Codigo de barras">
+                        <FloatingLabel controlId="floatingInputGrid" label="Numero de Documento">
                             <Form.Control
-                                name="codebar"
+                                name="ndoc"
                                 type="text"
-                                placeholder='codigo de barras'
+                                placeholder='num doc'
                                 onChange={handleInputChange}
-                                value={values.name}
+                                value={values.ndoc}
                                 required />
                         </FloatingLabel>
                     </Form.Group>
                     <br />
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Unidad de Medida">
+                        <FloatingLabel controlId="floatingInputGrid" label="Numero de celular">
                             <Form.Control
-                                name="unidad"
+                                name="numcel"
                                 type="text"
-                                placeholder='unidad de medida'
+                                placeholder='Numero de Celular'
                                 onChange={handleInputChange}
-                                value={values.name}
+                                value={values.numcel}
                                 required />
                         </FloatingLabel>
                     </Form.Group>
-                    <br/>
+                    <br />
                     <Form.Group>
-                        <FloatingLabel controlId="floatingInputGrid" label="Precio">
+                        <FloatingLabel controlId="floatingInputGrid" label="Direccion Principal">
                             <Form.Control
-                                name="precio"
+                                name="direccion"
                                 type="text"
                                 placeholder='precio'
                                 onChange={handleInputChange}
-                                value={values.name}
+                                value={values.direccion}
                                 required />
                         </FloatingLabel>
                     </Form.Group>
                 </Col>
                 <Col sm={4} className='justify-center'>
-                    <img width="150" height="150" src={picture} alt='product'/>
+                    <img width="150" height="150" src={picture} alt='client' />
                     <ProgressBar striped variant="info" now={archivo} min={0} max={100} />
                     <input className='btn btn-sm w-100' type='file' onChange={(event) => { setImageUpload(event.target.files[0]) }} />
                     <button className='btn btn-sm w-100' onClick={handleSubirIMG}><ArrowCircleUpIcon className='h-10 w-10' ></ArrowCircleUpIcon>subir imagen</button>
@@ -161,10 +161,10 @@ const AddProduct = (props) => {
             </Row>
             <br/>
             <Button type='submit' className="btn btn-sm" variant="success">
-                Agregar Producto
+                Agregar Cliente/Proveedor
             </Button>
         </Form>
     )
 }
 
-export default AddProduct
+export default AddClient

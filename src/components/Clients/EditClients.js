@@ -6,17 +6,17 @@ import { useState, useEffect } from 'react'
 import { serverTimestamp } from 'firebase/firestore'
 import { ArrowCircleUpIcon } from '@heroicons/react/solid'
 
-const EditProduct = (props) => {
+const EditClient = (props) => {
     const [key, setKey] = useState('edit');
 
     const initialStateValues = {
-        codigo: '',
-        codebar: '',
-        categoria: '',
-        unidad: '',
+        direccion: '',
+        email: '',
+        ndoc: '',
         nombre: '',
-        precio: '',
-        moneda: '',
+        numcel: '',
+        obs: '',
+        tdoc: '',
         img: '',
         timestamp: serverTimestamp()
     }
@@ -32,15 +32,15 @@ const EditProduct = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.updateProduct(values);
+        props.updateClient(values);
         props.handleClose2()
         setValues({ ...initialStateValues })
     }
 
-    const getProductById = async (id) => {
-        const productDoc = doc(db, "productos", id);
-        const docP = await getDoc(productDoc)
-        setValues({ ...docP.data() })
+    const getClientById = async (id) => {
+        const clientDoc = doc(db, "clientes", id);
+        const docC = await getDoc(clientDoc)
+        setValues({ ...docC.data() })
     }
 
     const [imageUpload, setImageUpload] = useState(null)
@@ -66,7 +66,7 @@ const EditProduct = (props) => {
         if (props.currentId === "") {
             setValues({ ...initialStateValues })
         } else {
-            getProductById(props.currentId)
+            getClientById(props.currentId)
         }
     }, [props.currentId])
 
@@ -86,90 +86,89 @@ const EditProduct = (props) => {
                         <Row>
                             <Col sm={4}>
                                 <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Codigo">
-                                        <Form.Control
-                                            name="codigo"
+                                    <FloatingLabel controlId="floatingInputGrid" label="Tipo de Documento">
+                                        <Form.Select
+                                            name="tdoc"
                                             type="text"
-                                            placeholder='codigo'
                                             onChange={handleInputChange}
-                                            value={values.codigo}
-                                            required />
+                                            required>
+                                            <option>Selecione Doc.</option>
+                                            <option>DNI</option>
+                                            <option>RUC</option>
+                                            <option>Pasaporte</option>
+                                        </Form.Select>
                                     </FloatingLabel>
                                 </Form.Group>
                                 <br />
                                 <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Categoria">
+                                    <FloatingLabel controlId="floatingInputGrid" label="Nombre/Razón social">
                                         <Form.Control
-                                            name="categoria"
+                                            name="Nombre"
                                             type="text"
-                                            placeholder='categoria'
-                                            onChange={handleInputChange}
-                                            value={values.categoria}
-                                            required />
-                                    </FloatingLabel>
-                                </Form.Group>
-                                <br />
-                                <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Nombre del producto">
-                                        <Form.Control
-                                            name="nombre"
-                                            type="text"
-                                            placeholder='nombre del producto'
+                                            placeholder='nombre'
                                             onChange={handleInputChange}
                                             value={values.nombre}
                                             required />
                                     </FloatingLabel>
                                 </Form.Group>
-                                <br/>
+                                <br />
                                 <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Moneda">
-                                        <Form.Select
-                                            name="moneda"
-                                            value={values.moneda}
-                                            type="text"
-                                            onChange={handleInputChange}
-                                            required>
-                                            <option>Seleccione Moneda</option>
-                                            <option>Soles</option>
-                                            <option>Dolares</option>
-                                            <option>Euros</option>
-                                        </Form.Select>
-                                    </FloatingLabel>
-                                </Form.Group>
-                            </Col>
-                            <Col sm={4}>
-                                <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Codigo de barras">
+                                    <FloatingLabel controlId="floatingInputGrid" label="E-mail">
                                         <Form.Control
-                                            name="codebar"
+                                            name="email"
                                             type="text"
-                                            placeholder='codigo de barras'
+                                            placeholder='email'
                                             onChange={handleInputChange}
-                                            value={values.codebar}
+                                            value={values.email}
                                             required />
                                     </FloatingLabel>
                                 </Form.Group>
                                 <br />
                                 <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Unidad de Medida">
+                                    <FloatingLabel controlId="floatingInputGrid" label="Observaciones">
                                         <Form.Control
-                                            name="unidad"
+                                            name="obs"
                                             type="text"
-                                            placeholder='unidad de medida'
+                                            placeholder='observaciones'
                                             onChange={handleInputChange}
-                                            value={values.unidad}
+                                            value={values.obs}
                                             required />
                                     </FloatingLabel>
                                 </Form.Group>
-                                <br/>
+                            </Col>
+                            <Col sm={4}>
                                 <Form.Group>
-                                    <FloatingLabel controlId="floatingInputGrid" label="Precio">
+                                    <FloatingLabel controlId="floatingInputGrid" label="Numero de Documento">
                                         <Form.Control
-                                            name="precio"
+                                            name="ndoc"
+                                            type="text"
+                                            placeholder='num doc'
+                                            onChange={handleInputChange}
+                                            value={values.ndoc}
+                                            required />
+                                    </FloatingLabel>
+                                </Form.Group>
+                                <br />
+                                <Form.Group>
+                                    <FloatingLabel controlId="floatingInputGrid" label="Numero de celular">
+                                        <Form.Control
+                                            name="numcel"
+                                            type="text"
+                                            placeholder='Numero de Celular'
+                                            onChange={handleInputChange}
+                                            value={values.numcel}
+                                            required />
+                                    </FloatingLabel>
+                                </Form.Group>
+                                <br />
+                                <Form.Group>
+                                    <FloatingLabel controlId="floatingInputGrid" label="Direccion Principal">
+                                        <Form.Control
+                                            name="direccion"
                                             type="text"
                                             placeholder='precio'
                                             onChange={handleInputChange}
-                                            value={values.precio}
+                                            value={values.direccion}
                                             required />
                                     </FloatingLabel>
                                 </Form.Group>
@@ -182,11 +181,9 @@ const EditProduct = (props) => {
                             </Col>
 
                         </Row>
-
-
-                        <Button type='submit' className="block
-                    text-md font-bold my-4">
-                            Editar Producto
+                        <br />
+                        <Button type='submit' className="btn btn-sm" variant="warning">
+                            Editar Cliente/Proveedor
                         </Button>
                     </Form>
                 </Tab>
@@ -205,4 +202,4 @@ const EditProduct = (props) => {
     )
 }
 
-export default EditProduct
+export default EditClient
