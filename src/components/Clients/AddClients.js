@@ -62,6 +62,12 @@ const AddClient = (props) => {
 
         <Form className='px-4' onSubmit={handleSubmit}>
             <Row>
+                <Col sm={4} className='justify-center'>
+                    <img width="150" height="150" src={picture} alt='client' />
+                    <ProgressBar striped variant="info" now={archivo} min={0} max={100} />
+                    <input className='btn btn-sm w-100' type='file' onChange={(event) => { setImageUpload(event.target.files[0]) }} />
+                    <button className='btn btn-sm w-100' onClick={handleSubirIMG}><ArrowCircleUpIcon className='h-10 w-10' ></ArrowCircleUpIcon>subir imagen</button>
+                </Col>
                 <Col sm={4}>
                     <Form.Group>
                         <FloatingLabel controlId="floatingInputGrid" label="Tipo de Documento">
@@ -151,15 +157,9 @@ const AddClient = (props) => {
                         </FloatingLabel>
                     </Form.Group>
                 </Col>
-                <Col sm={4} className='justify-center'>
-                    <img width="150" height="150" src={picture} alt='client' />
-                    <ProgressBar striped variant="info" now={archivo} min={0} max={100} />
-                    <input className='btn btn-sm w-100' type='file' onChange={(event) => { setImageUpload(event.target.files[0]) }} />
-                    <button className='btn btn-sm w-100' onClick={handleSubirIMG}><ArrowCircleUpIcon className='h-10 w-10' ></ArrowCircleUpIcon>subir imagen</button>
-                </Col>
 
             </Row>
-            <br/>
+            <br />
             <Button type='submit' className="btn btn-sm" variant="success">
                 Agregar Cliente/Proveedor
             </Button>

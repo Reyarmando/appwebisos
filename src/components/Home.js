@@ -1,17 +1,10 @@
-import { Accordion, Row, Col, Button, Modal, Spinner } from 'react-bootstrap';
-import { useState } from 'react';
-import Product from './Products/Product';
-import AddProduct from './Products/AddProduct';
+import { Accordion, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { useAuth } from './Contexts/authContext';
 import { Outlet, Link } from "react-router-dom"
 export function Home() {
 
     const { user, logout, loading } = useAuth()
 
-    const [show, steShow] = useState(false)
-
-    const handleShow = () => steShow(true)
-    const handleClose = () => steShow(false)
 
     const handleLogout = async () => {
         try {
@@ -27,7 +20,7 @@ export function Home() {
         <div>
             <Row>
                 <Col sm={10}>
-                    <h3>Bienvenido:</h3>
+                    <h3>Bienvenido: {user.email}</h3>
                 </Col>
                 <Col>
                     <Button onClick={handleLogout} className="btn btn-xs" variant="light">Salir</Button>
@@ -130,22 +123,7 @@ export function Home() {
                 </Col>
             </Row>
 
-            <Modal show={show} size="lg">
-                <Modal.Header >
-                    <Modal.Title>
-                        Producto / Servicio
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <AddProduct />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose} >
-                        close
-                    </Button>
-                </Modal.Footer>
-
-            </Modal>
+            
         </div>
     )
 }

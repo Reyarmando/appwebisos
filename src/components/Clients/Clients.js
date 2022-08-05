@@ -5,7 +5,7 @@ import { db } from "../../firebase"
 import { Modal, Button, Table, Row, Col, Container } from 'react-bootstrap'
 import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, orderBy, query } from "firebase/firestore"
 
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { PencilAltIcon, TrashIcon, SortAscendingIcon, SortDescendingIcon } from '@heroicons/react/solid'
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -13,6 +13,8 @@ import withReactContent from 'sweetalert2-react-content'
 import { motion, AnimatePresence } from 'framer-motion'
 import AddClient from "./AddClients"
 import EditClient from "./EditClients"
+import Compras from "./Compras"
+import Ventas from "./Ventas"
 
 const Clients = () => {
 
@@ -45,6 +47,16 @@ const Clients = () => {
 
     const handleShow2 = () => steShow2(true)
     const handleClose2 = () => steShow2(false)
+
+    const [show3, steShow3] = useState(false)
+
+    const handleShow3 = () => steShow3(true)
+    const handleClose3 = () => steShow3(false)
+
+    const [show4, steShow4] = useState(false)
+
+    const handleShow4 = () => steShow4(true)
+    const handleClose4 = () => steShow4(false)
 
     const addClient = async (objetProvider) => {
         await addDoc(clientsCollection, (objetProvider))
@@ -116,6 +128,39 @@ const Clients = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+
+                <Modal show={show3} size="lg">
+                    <Modal.Header >
+                        <Modal.Title>
+                            Clientes / Proveedores
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Ventas />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose3} >
+                            close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={show4} size="lg">
+                    <Modal.Header >
+                        <Modal.Title>
+                            Clientes / Proveedores
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Compras />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose4} >
+                            close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Container>
                     <Row>
                         <Col><motion.h1 initial={{ scale: 0 }}
@@ -140,6 +185,7 @@ const Clients = () => {
                                         <th>N° Celular</th>
                                         <th>E-mail</th>
                                         <th>Observaciones</th>
+                                        <th>Informes</th>
                                         <th>actions</th>
                                     </tr>
                                 </thead>
@@ -158,12 +204,16 @@ const Clients = () => {
                                                 variants={variants}
                                                 layoutId={client.id}
                                                 key={client.id}>
-                                                <td><img className='center' width="50" height="50" src={client.img} alt=''/></td>
+                                                <td><img className='center' width="50" height="50" src={client.img} alt='' /></td>
                                                 <td>{client.nombre}</td>
                                                 <td>{client.ndoc}</td>
                                                 <td>{client.numcel}</td>
                                                 <td>{client.email}</td>
                                                 <td>{client.obs}</td>
+                                                <td>
+                                                    <button className="btn btn-xs" onClick={handleShow3}><SortAscendingIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(client.id)} /></button>
+                                                    <button className="btn btn-xs" onClick={handleShow4}><SortDescendingIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
+                                                </td>
                                                 <td>
                                                     <button className="btn btn-xs" onClick={handleShow2}><PencilAltIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(client.id)} /></button>
                                                     <button className="btn btn-xs" onClick={() => confirmDelete(client.id)}><TrashIcon className="h-4 w-4 text-red-700" aria-hidden="true" /></button>

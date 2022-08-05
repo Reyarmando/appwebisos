@@ -15,6 +15,8 @@ import AddProduct from "./AddProduct"
 import EditProduct from "./EditProducts"
 
 import * as XLSX from 'xlsx'
+import Ventas from "./Ventas"
+import Compras from "./Compras"
 
 const Products = () => {
 
@@ -52,13 +54,18 @@ const Products = () => {
 
     const [show3, steShow3] = useState(false)
 
-    const handleShow3 = () => steShow(true)
-    const handleClose3 = () => steShow(false)
+    const handleShow3 = () => steShow3(true)
+    const handleClose3 = () => steShow3(false)
 
     const [show4, steShow4] = useState(false)
 
-    const handleShow4 = () => steShow2(true)
-    const handleClose4 = () => steShow2(false)
+    const handleShow4 = () => steShow4(true)
+    const handleClose4 = () => steShow4(false)
+
+    const [show5, steShow5] = useState(false)
+
+    const handleShow5 = () => steShow5(true)
+    const handleClose5 = () => steShow5(false)
 
     const addProduct = async (objetProvider) => {
         await addDoc(productsCollection, (objetProvider))
@@ -143,14 +150,14 @@ const Products = () => {
                 <Modal show={show3} size="lg">
                     <Modal.Header >
                         <Modal.Title>
-                            Producto / Servicio
+                            Ventas
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <AddProduct {...{ addProduct, handleClose, currentId }} />
+                        <Ventas/>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose} >
+                        <Button variant="secondary" onClick={handleClose3} >
                             close
                         </Button>
                     </Modal.Footer>
@@ -159,14 +166,30 @@ const Products = () => {
                 <Modal show={show4} size="lg">
                     <Modal.Header >
                         <Modal.Title>
-                            Producto / Servicio
+                            Compras
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <AddProduct {...{ addProduct, handleClose, currentId }} />
+                        <Compras />
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose} >
+                        <Button variant="secondary" onClick={handleClose4} >
+                            close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={show5} size="lg">
+                    <Modal.Header >
+                        <Modal.Title>
+                            Kardex
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Compras />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose5} >
                             close
                         </Button>
                     </Modal.Footer>
@@ -197,7 +220,7 @@ const Products = () => {
                                         <th>Nombre</th>
                                         <th>Codigo</th>
                                         <th>Codigo de barras</th>
-                                        <th>Categoia</th>
+                                        <th>Categoria</th>
                                         <th>Precio</th>
                                         <th>informes</th>
                                         <th>actions</th>
@@ -225,9 +248,9 @@ const Products = () => {
                                                 <td>{product.categoria}</td>
                                                 <td>{product.precio}</td>
                                                 <td>
-                                                    <button className="btn btn-xs" onClick={handleShow2}><SortAscendingIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>
-                                                    <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><SortDescendingIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
-                                                    <button className="btn btn-xs" onClick={() => confirmDelete(product.id)}><SwitchVerticalIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
+                                                    <button className="btn btn-xs" onClick={handleShow3}><SortAscendingIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>
+                                                    <button className="btn btn-xs" onClick={handleShow4}><SortDescendingIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
+                                                    <button className="btn btn-xs" onClick={handleShow5}><SwitchVerticalIcon className="h-5 w-5 text-black-700" aria-hidden="true" /></button>
                                                 </td>
                                                 <td>
                                                     <button className="btn btn-xs" onClick={handleShow2}><PencilAltIcon className="h-5 w-5 text-black-500" onClick={() => setCurrentId(product.id)} /></button>

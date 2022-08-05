@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/Table';
 
-function Ventas() {
+function Kardex() {
 
 
   return (
@@ -29,4 +29,4 @@ function Ventas() {
   );
 }
 
-export default Ventas;
+export default Kardex;
