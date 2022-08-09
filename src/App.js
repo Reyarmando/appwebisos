@@ -7,6 +7,7 @@ import { AuthProvider } from './components/Contexts/authContext';
 import { ProtectedRoutesL } from './components/Login/ProtectedRouteL';
 import Clients from './components/Clients/Clients';
 import Products from './components/Products/Product';
+import Vender from './components/Vender/Vender';
 
 
 function App() {
@@ -26,6 +27,12 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Clients />
+                  </ProtectedRoute>
+                } />
+                <Route path="Vender"
+                element={
+                  <ProtectedRoute>
+                    <Vender/>
                   </ProtectedRoute>
                 } />
             </Route>
